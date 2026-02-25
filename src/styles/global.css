@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+:root {
+    --bg: #f8fafc;
+    --bg-alt: #f3f4f6;
+    --bg-soft: #eef2f7;
+    --surface: #ffffff;
+    --text: #0f172a;
+    --text-muted: #475569;
+    --border: #e2e8f0;
+    --accent: #b45309;
+    --accent-hover: #92400e;
+  }
+  
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+  }
+  
+  ::selection {
+    background: rgba(180, 83, 9, 0.18);
+  }
+  
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.8rem 1.1rem;
+    border-radius: 0.75rem;
+    border: 1px solid transparent;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(180, 83, 9, 0.24);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+
+  .btn-secondary {
+    background: rgba(180, 83, 9, 0.1);
+    border-color: rgba(180, 83, 9, 0.28);
+    color: var(--accent);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(180, 83, 9, 0.16);
+    border-color: rgba(180, 83, 9, 0.4);
+  }

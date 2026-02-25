@@ -1,0 +1,25 @@
+---
+// src/pages/index.astro
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/ui/Navbar";
+import HeroVideo from "../components/sections/HeroVideo.astro";
+import Partners from "../components/sections/Partner.astro";
+import AboutUs from "../components/sections/AboutUs";
+import Services from "../components/sections/Services";
+import StagesPricing from "../components/sections/StagesPricing";
+import ContactChannels from "../components/sections/ContactChannels";
+import FAQ from "../components/sections/FAQ";
+import Footer from "../components/sections/Footer";
+---
+
+<BaseLayout title="Forex Academy">
+	<Navbar client:visible />
+	<HeroVideo />
+	<AboutUs />
+	<Partners />
+	<Services />
+	<StagesPricing />
+	<ContactChannels />
+	<FAQ />
+	<Footer />
+</BaseLayout>
