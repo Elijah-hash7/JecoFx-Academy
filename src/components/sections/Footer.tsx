@@ -686,14 +686,14 @@ export default function Footer() {
             <button
               type="button"
               onClick={() => setActivePolicy('privacy')}
-              className="hover:text-[var(--text)] transition-colors"
+              className="hover:text-[var(--text)] transition-colors cursor-pointer"
             >
               Privacy
             </button>
             <button
               type="button"
               onClick={() => setActivePolicy('terms')}
-              className="hover:text-[var(--text)] transition-colors"
+              className="hover:text-[var(--text)] transition-colors cursor-pointer"
             >
               Terms
             </button>
