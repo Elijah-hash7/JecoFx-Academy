@@ -55,7 +55,7 @@ export default function StagesPricing() {
               <Reveal key={idx} delay={idx * 100} once className="flex">
                 <div className={`w-full rounded-[1.6rem] p-5 sm:p-6 relative flex flex-col transition-all duration-200
                   ${isExclusive
-                    ? 'bg-[#05070A] border border-[var(--accent)] shadow-[0_0_0_1px_rgba(180,83,9,0.3),0_16px_38px_rgba(180,83,9,0.35)]'
+                    ? 'bg-[#05070A] border border-[var(--accent)] shadow-[0_0_0_1px_rgba(180,83,9,0.3)]'
                     : 'bg-[var(--surface)] border border-[var(--border)]'}`}>
                   {isExclusive && (
                     <span className="absolute top-4 right-4 rounded-full bg-[var(--accent)]/20 border border-[var(--accent)]/45 px-2.5 py-1 text-[10px] font-bold tracking-[0.12em] text-amber-200 uppercase">
@@ -118,7 +118,7 @@ export default function StagesPricing() {
                 >
                   <div className={`w-full rounded-[2rem] p-9 relative flex flex-col transition-all duration-200 hover:-translate-y-2
                     ${isExclusive
-                      ? 'bg-[#05070A] border border-[var(--accent)] shadow-[0_0_0_1px_rgba(180,83,9,0.3),0_22px_50px_rgba(180,83,9,0.38)]'
+                      ? 'bg-[#05070A] border border-[var(--accent)] shadow-[0_0_0_1px_rgba(180,83,9,0.3)]'
                       : 'bg-[var(--surface)] border border-[var(--border)]'}`}>
                     {isExclusive && (
                       <span className="absolute top-5 right-5 rounded-full bg-[var(--accent)]/20 border border-[var(--accent)]/45 px-3 py-1.5 text-[11px] font-bold tracking-[0.12em] text-amber-200 uppercase">

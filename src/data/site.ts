@@ -1,5 +1,6 @@
 // src/data/site.ts
 export const WHATSAPP_NUMBER = "09077974465";
+export const GOOGLE_MEET_BOOKING_URL = "https://calendar.app.google/YOUR-BOOKING-ID";
 
 export const aboutUsStats = [
   { label: "Analysis Session", value: "4x / week" },
@@ -13,20 +14,20 @@ export const services = [
     description: "Daily breakdown of major pairs with entry and exit zones for high probability setups.",
   },
   {
-    title: "Live Trading Sessions",
-    description: "Watch and trade alongside our funded professionals in real-time execution.",
+    title: "Daily Signals",
+    description: "Daily signals on currency pairs, Deriv synthetic indices, and commodities with clear entry, stop-loss, and take-profit guidance.",
   },
   {
-    title: "Prop Firm Passing",
-    description: "Strategies specifically tailored to pass strict prop firm challenges efficiently.",
+    title: "Account Management",
+    description: "We manage accounts from $5000 minimum (T&C apply) using clear risk rules and consistent execution.",
   },
   {
     title: "Risk Management",
     description: "Protect your capital with our proprietary risk calculators and drawdown rules.",
   },
   {
-    title: "Psychology Coaching",
-    description: "Master your emotions and build the unshakeable discipline of a 7-figure trader.",
+    title: "Physical & Online Classes",
+    description: "Structured physical and online classes covering commodities, stocks, and crypto with guided lessons, live Q&A, and practice sessions.",
   },
   {
     title: "1-on-1 Mentorship",
@@ -38,7 +39,7 @@ export const stages = [
   {
     name: "Beginner",
     price: "$100",
-    period: "one-time",
+    period: "2 months",
     description: "Perfect for those starting their trading journey from absolute scratch.",
     features: [
       "Introduction to Forex Markets",
@@ -51,7 +52,7 @@ export const stages = [
   {
     name: "Intermediate",
     price: "$100",
-    period: "one-time",
+    period: "2 months",
     description: "For traders looking to build a consistent and profitable strategy.",
     features: [
       "Advanced Price Action Concepts",
@@ -64,7 +65,7 @@ export const stages = [
   {
     name: "Advanced",
     price: "$100",
-    period: "one-time",
+    period: "2 months",
     description: "Mastery level for securing and managing prop firm funding accounts.",
     features: [
       "Institutional Order Flow",
@@ -77,7 +78,7 @@ export const stages = [
   {
     name: "Exclusive Offer",
     price: "$200",
-    period: "one-time",
+    period: "6 months",
     description: "Beginner to Advanced straight up in one complete package.",
     exclusive: true,
     features: [

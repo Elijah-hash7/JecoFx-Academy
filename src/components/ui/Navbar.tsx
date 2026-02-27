@@ -37,19 +37,19 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Determine the color of text/icons based on scroll and hero state
-    const isDarkTheme = isScrolled || isOverDarkHero;
+    // Determine the color of text/icons based on hero state (not scroll)
+    const isOverHero = isOverDarkHero;
 
     return (
         <>
             <nav className="fixed top-0 inset-x-0 z-[60] bg-transparent">
                 <div
-                    className={`w-full py-2 md:py-2 transition-all duration-300 border ${isScrolled
+                    className={`w-full h-14 md:h-16 transition-[background-color,border-color,box-shadow] duration-300 border ${isScrolled
                         ? 'bg-black/20 border-white/10 backdrop-blur-md'
                         : 'bg-transparent border-transparent backdrop-blur-0'
                         }`}
                 >
-                    <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full flex items-center justify-between">
+                    <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full h-full flex items-center justify-between">
                         {/* Logo */}
                         <a href="/" className="flex items-center gap-1 flex-shrink-0 whitespace-nowrap">
                             <img
@@ -58,9 +58,9 @@ export default function Navbar() {
                                 width={164}
                                 height={32}
                                 decoding="async"
-                                className={`h-8 w-auto transition-[filter] duration-300 ${isDarkTheme ? '' : 'brightness-0 saturate-100'}`}
+                                className={`h-8 w-auto transition-[filter] duration-300 ${isOverHero ? '' : 'brightness-0 saturate-100'}`}
                             />
-                            <span className={`font-black text-base md:text-lg tracking-[0.08em] leading-none transition-colors duration-300 ${isDarkTheme ? 'text-white' : 'text-slate-900'}`}>JECOFX</span>
+                            <span className={`font-black text-base md:text-lg tracking-[0.08em] leading-none transition-colors duration-300 ${isOverHero ? 'text-white' : 'text-[#0F172B]'}`}>JECOFX</span>
                         </a>
 
                         {/* Desktop Navigation */}
@@ -70,12 +70,12 @@ export default function Navbar() {
                                     key={link.name}
                                     href={link.href}
                                     className={`px-4 py-2 rounded-full text-[15px] font-semibold tracking-[0.02em] transition-all duration-200 ${activeSection === link.sectionId
-                                        ? 'bg-white/12 text-white'
-                                        : isScrolled
+                                        ? isOverHero
+                                            ? 'bg-white/12 text-white'
+                                            : 'bg-slate-900/10 text-[#0F172B]'
+                                        : isOverHero
                                             ? 'text-white/90 hover:text-white hover:bg-white/10'
-                                            : isOverDarkHero
-                                                ? 'text-white/90 hover:text-white hover:bg-white/10'
-                                                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-900/5'
+                                            : 'text-[#0F172B] hover:text-[#0F172B] hover:bg-slate-900/5'
                                         }`}
                                 >
                                     {link.name}
@@ -85,14 +85,14 @@ export default function Navbar() {
 
                         {/* PREMIUM ANIMATED HAMBURGER MENU */}
                         <button
-                            className={`md:hidden relative h-10 w-10 flex flex-col items-center justify-center gap-[5px] rounded-full transition-colors duration-300 ${isDarkTheme ? 'hover:bg-white/10' : 'hover:bg-slate-900/5'}`}
+                            className={`md:hidden relative h-10 w-10 flex flex-col items-center justify-center gap-[5px] rounded-full transition-colors duration-300 ${isOverHero ? 'hover:bg-white/10' : 'hover:bg-slate-900/5'}`}
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             aria-label="Toggle menu"
                             aria-expanded={isMobileMenuOpen}
                         >
-                            <span className={`block h-[2px] w-5 rounded-full transition-all duration-300 ease-out ${isDarkTheme ? 'bg-white' : 'bg-slate-900'} ${isMobileMenuOpen ? 'translate-y-[7px] rotate-45' : ''}`} />
-                            <span className={`block h-[2px] w-5 rounded-full transition-all duration-300 ease-out ${isDarkTheme ? 'bg-white' : 'bg-slate-900'} ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
-                            <span className={`block h-[2px] w-5 rounded-full transition-all duration-300 ease-out ${isDarkTheme ? 'bg-white' : 'bg-slate-900'} ${isMobileMenuOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
+                            <span className={`block h-[2px] w-5 rounded-full transition-all duration-300 ease-out ${isOverHero ? 'bg-white' : 'bg-[#0F172B]'} ${isMobileMenuOpen ? 'translate-y-[7px] rotate-45' : ''}`} />
+                            <span className={`block h-[2px] w-5 rounded-full transition-all duration-300 ease-out ${isOverHero ? 'bg-white' : 'bg-[#0F172B]'} ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
+                            <span className={`block h-[2px] w-5 rounded-full transition-all duration-300 ease-out ${isOverHero ? 'bg-white' : 'bg-[#0F172B]'} ${isMobileMenuOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
                         </button>
                     </div>
                 </div>

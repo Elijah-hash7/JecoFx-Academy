@@ -5,6 +5,7 @@ import student2 from '../../assets/student2.webp';
 import student3 from '../../assets/student3.webp';
 import student4 from '../../assets/student4.webp';
 
+
 const toAssetUrl = (asset: string | { src: string }) =>
   typeof asset === 'string' ? asset : asset.src;
 
@@ -17,7 +18,7 @@ export default function AboutUs() {
             <div className="flex -space-x-3 mb-2">
               <div className="flex -space-x-4">
                 <img
-                  src={toAssetUrl(student1)}
+                  src={toAssetUrl(student2)}
                   alt="Student 1"
                   width={48}
                   height={48}
@@ -26,7 +27,7 @@ export default function AboutUs() {
                   className="inline-block h-12 w-12 rounded-full ring-4 ring-[var(--bg)] object-cover"
                 />
                 <img
-                  src={toAssetUrl(student2)}
+                  src={toAssetUrl(student3)}
                   alt="Student 2"
                   width={48}
                   height={48}
@@ -35,7 +36,7 @@ export default function AboutUs() {
                   className="inline-block h-12 w-12 rounded-full ring-4 ring-[var(--bg)] object-cover"
                 />
                 <img
-                  src={toAssetUrl(student3)}
+                  src={toAssetUrl(student1)}
                   alt="Student 3"
                   width={48}
                   height={48}
@@ -56,14 +57,14 @@ export default function AboutUs() {
             </div>
             <p className="text-sm text-[var(--text-muted)] mb-1">Trusted by over</p>
             <div className="flex items-end gap-2">
-              <h2 className="text-4xl font-bold text-[var(--text)] tracking-tight">1K+</h2>
+              
               <span className="text-xl font-medium text-[var(--text-muted)] leading-none pb-1">Students worldwide</span>
             </div>
           </Reveal>
 
           <Reveal direction="left" className="lg:w-3/4" once={false}>
             <h3 className="text-3xl md:text-5xl font-medium text-[var(--text)] leading-[1.2] mb-6">
-              We are committed to empowering traders through <span className="inline-flex items-center justify-center px-4 py-1 mx-1 rounded-full bg-[var(--surface)] border border-[var(--border)] align-middle shadow-sm"><span className="w-3 h-3 rounded-full bg-[var(--accent)] mr-2"></span>smart</span> data-driven <span className="text-[var(--text-muted)]">systems that strengthen decision-making and protect capital.</span>
+            We are committed to simplifying forex trading by training students to become  a <span className="inline-flex items-center justify-center px-4 py-1 mx-1 rounded-full bg-[var(--surface)] border border-[var(--border)] align-middle shadow-sm"><span className="w-3 h-3 rounded-full bg-[var(--accent)] mr-2"></span>confident</span> ,consistent <span className="text-[var(--text-muted)]"> and knowledgeable profitable traders.</span>
             </h3>
 
             <p className="text-[var(--text-muted)] font-light max-w-3xl mb-12 text-lg">

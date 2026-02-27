@@ -17,20 +17,27 @@ export default function ContactChannels() {
   const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     'Hi, I would like to learn more about your forex trading programs.',
   )}`;
+  const requestCallLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    'Hi, I want to schedule a call with JECOFX Academy.',
+  )}`;
 
-  const emailLink = 'mailto:hello@jecofx.com';
+  const emailLink = 'mailto:Jecofxacademy@gmail.com';
 
   const instgramLink = `https://www.instagram.com/jecofxacademy?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==`
 
   const telegramLink = `https://t.me/jeco4rex`
+
+  const tiktokLink = `https://www.tiktok.com/@jecofxacademy?_r=1&_t=ZS-94F4QHw7GOy`
+
+  const facebookLink = `https://www.facebook.com/jecofxacademy`
 
   
 
   const socials = [
     { name: 'Instagram', href: instgramLink, icon: Instagram },
     { name: 'Telegram', href: telegramLink, icon: Send },
-    { name: 'TikTok', href: '#', image: '/img/tiktok.png' },
-    { name: 'Facebook', href: '#', icon: Facebook },
+    { name: 'TikTok', href: tiktokLink, image: '/img/tiktok.png' },
+    { name: 'Facebook', href: facebookLink, icon: Facebook },
   ];
 
   return (
@@ -91,7 +98,7 @@ export default function ContactChannels() {
                 </p>
               </div>
               <a
-                href={whatsappLink}
+                href={requestCallLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-8 w-full btn btn-primary"
