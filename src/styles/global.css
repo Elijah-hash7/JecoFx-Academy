@@ -1,62 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
 @import "tailwindcss";
+@import "./animations.css";
 
+/* ═══════════════════════════════════════════════
+   JECOFX — Design Tokens
+   Dark-mode adjacent: deep slate, not pitch black.
+   Clean, institutional, complements the hero.
+   ═══════════════════════════════════════════════ */
 :root {
-    --bg: #f8fafc;
-    --bg-alt: #f3f4f6;
-    --bg-soft: #eef2f7;
-    --surface: #ffffff;
-    --text: #0f172a;
-    --text-muted: #475569;
-    --border: #e2e8f0;
-    --accent: #b45309;
-    --accent-hover: #92400e;
-  }
-  
-  html, body {
-    background: var(--bg);
-    color: var(--text);
-    margin: 0;
-    padding: 0;
-  }
-  
-  ::selection {
-    background: rgba(180, 83, 9, 0.18);
-  }
-  
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    padding: 0.8rem 1.1rem;
-    border-radius: 0.75rem;
-    border: 1px solid transparent;
-    font-size: 0.95rem;
-    line-height: 1.2;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
-  }
+  /* Backgrounds — stepped darker than before */
+  --bg:       #0E1117;   /* page base — very dark navy-slate */
+  --bg-alt:   #0B0E14;   /* slightly deeper alt sections */
+  --bg-soft:  #0E1117;   /* same as bg for consistency */
 
-  .btn-primary {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #ffffff;
-    box-shadow: 0 8px 20px rgba(180, 83, 9, 0.24);
-  }
+  /* Surfaces — cards, panels, modals */
+  --surface:  #151B26;   /* elevated above bg — clear but not glaring */
 
-  .btn-primary:hover {
-    background: var(--accent-hover);
-    border-color: var(--accent-hover);
-  }
+  /* Text */
+  --text:       #F1F5F9;   /* near-white — crisp on dark bg */
+  --text-muted: #94A3B8;   /* slate-400 — readable, not washed out */
 
-  .btn-secondary {
-    background: rgba(180, 83, 9, 0.1);
-    border-color: rgba(180, 83, 9, 0.28);
-    color: var(--accent);
-  }
+  /* Borders — subtle separators */
+  --border: rgba(255,255,255,0.07);
 
-  .btn-secondary:hover {
-    background: rgba(180, 83, 9, 0.16);
-    border-color: rgba(180, 83, 9, 0.4);
-  }
+  /* Accent — deep navy blue, institutional */
+  --accent:       #3B82F6;   /* blue-500 — visible on dark bg */
+  --accent-hover: #2563EB;   /* blue-600 on hover */
+}
+
+/* ═══ Reset ═══ */
+html, body {
+  background: var(--bg);
+  color: var(--text-muted);
+  margin: 0;
+  padding: 0;
+}
+
+/* ═══ Typography ═══ */
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+}
+
+/* Syne for all headings outside hero */
+section:not(#hero) h1,
+section:not(#hero) h2,
+section:not(#hero) h3,
+section:not(#hero) h4,
+section:not(#hero) h5,
+section:not(#hero) h6 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+/* Syne for font-serif utility (pricing section) */
+.font-serif {
+  font-family: 'Syne', sans-serif;
+}
+
+/* ═══ Selection ═══ */
+::selection {
+  background: rgba(59, 130, 246, 0.22);
+}
+
+/* ═══ FAQ Details/Summary ═══ */
+details > summary               { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+
+/* ═══ Scrollbar — dark, subtle ═══ */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.18); }
+
+/* ═══ Buttons ═══ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: background-color 160ms ease, border-color 160ms ease,
+              color 160ms ease, box-shadow 160ms ease, transform 120ms ease;
+}
+.btn:hover { transform: translateY(-1px); }
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(59,130,246,0.28);
+}
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: 0 6px 24px rgba(59,130,246,0.36);
+}
+
+.btn-secondary {
+  background: rgba(59,130,246,0.08);
+  border-color: rgba(59,130,246,0.22);
+  color: #93C5FD;   /* blue-300 — readable on dark */
+}
+.btn-secondary:hover {
+  background: rgba(59,130,246,0.14);
+  border-color: rgba(59,130,246,0.36);
+}

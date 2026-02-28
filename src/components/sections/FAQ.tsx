@@ -12,7 +12,7 @@ export default function FAQ() {
         <div className="space-y-4">
           {faqs.map((faq, idx) => (
             <Reveal key={idx} delay={idx * 100}>
-              <details className="group bg-[var(--surface)] border border-[var(--border)] rounded-2xl overflow-hidden cursor-pointer marker:content-[''] hover:border-[var(--accent)]/40 transition-colors">
+              <details className="group bg-[var(--surface)] border border-[var(--border)] rounded-[10px] overflow-hidden cursor-pointer marker:content-[''] hover:border-[var(--accent)]/40 transition-colors">
                 <summary className="px-8 py-6 text-lg font-medium text-[var(--text)] flex justify-between items-center select-none">
                   {faq.question}
                   <span className="text-[var(--text-muted)] group-open:rotate-45 transition-transform duration-200 text-2xl font-light leading-none">+</span>

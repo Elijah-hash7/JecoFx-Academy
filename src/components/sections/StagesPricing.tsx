@@ -1,196 +1,170 @@
-import { useEffect, useRef, useState } from 'react';
-import Reveal from '../ui/Reveal';
+"use client";
+
+import { useRef, useState } from 'react';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { stages, WHATSAPP_NUMBER } from '../../data/site';
 
-export default function StagesPricing() {
-  const desktopTrackRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  const orderedStages = [...stages].sort((a, b) => Number(Boolean(b.exclusive)) - Number(Boolean(a.exclusive)));
+function PricingCard({
+  stage,
+  index,
+  isBonusView,
+}: {
+  stage: (typeof stages)[number];
+  index: number;
+  isBonusView: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  useScrollReveal(ref, { delay: index * 100 });
 
-  const updateDesktopScrollState = () => {
-    if (!desktopTrackRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = desktopTrackRef.current;
-    const maxLeft = scrollWidth - clientWidth;
-    setCanScrollLeft(scrollLeft > 8);
-    setCanScrollRight(scrollLeft < maxLeft - 8);
-  };
-
-  const scrollDesktopCards = (direction: 'left' | 'right') => {
-    if (!desktopTrackRef.current) return;
-    const amount = desktopTrackRef.current.clientWidth * 0.88;
-    desktopTrackRef.current.scrollBy({
-      left: direction === 'right' ? amount : -amount,
-      behavior: 'smooth',
-    });
-  };
-
-  useEffect(() => {
-    updateDesktopScrollState();
-    const onResize = () => updateDesktopScrollState();
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
+  const isExclusive = Boolean(stage.exclusive);
+  const link = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi, I want to enroll for the ${stage.name} stage.`)}`;
 
   return (
-    <section className="py-25 bg-[var(--bg-alt)] border-t border-[var(--border)]" id="stages">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        
-        {/* Typography matched to Image 4 (Serif vs Sans mix) */}
-        <Reveal once>
-          <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-2xl font-serif text-[var(--text-muted)] mb-2 italic">Discover</h2>
-            <p className="text-5xl md:text-7xl text-[var(--text)]">
-              <span className="font-serif font-light">Our flat</span> <span className="font-serif font-bold">Pricing</span>
-            </p>
+    <div ref={ref} data-reveal className="reveal-scale-rise reveal-pricing-card flex h-full w-full">
+      <div
+        className={`w-full rounded-2xl relative flex flex-col transition-transform duration-300 hover:-translate-y-1 ${isExclusive
+            ? 'bg-gradient-to-b from-[#080e1f] to-[#030509] border border-[#1e3a8a] shadow-[0_0_40px_-8px_rgba(30,58,138,0.35)] px-6 pt-10 pb-6 md:px-8 md:pt-12 md:pb-8'
+            : 'bg-[var(--surface)] border border-[var(--border)] hover:border-[rgba(255,255,255,0.12)] p-6 md:p-8'
+          }`}
+      >
+        {isExclusive && (
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#0d1526] border border-[#1e3a8a]/60 shadow-[0_4px_16px_rgba(30,58,138,0.3)]">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[9px] font-extrabold tracking-[0.22em] uppercase text-white/80">Premium Offer</span>
+            </div>
           </div>
-        </Reveal>
+        )}
 
-        <div className="xl:hidden grid grid-cols-1 gap-5 max-w-md mx-auto">
-          {orderedStages.map((stage, idx) => {
-            const isExclusive = Boolean(stage.exclusive);
-            const link = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi, I want to enroll for the ${stage.name} stage.`)}`;
-
-            return (
-              <Reveal key={idx} delay={idx * 100} once className="flex">
-                <div className={`w-full rounded-[1.6rem] p-5 sm:p-6 relative flex flex-col transition-all duration-200
-                  ${isExclusive
-                    ? 'bg-[#05070A] border border-[var(--accent)] shadow-[0_0_0_1px_rgba(180,83,9,0.3)]'
-                    : 'bg-[var(--surface)] border border-[var(--border)]'}`}>
-                  {isExclusive && (
-                    <span className="absolute top-4 right-4 rounded-full bg-[var(--accent)]/20 border border-[var(--accent)]/45 px-2.5 py-1 text-[10px] font-bold tracking-[0.12em] text-amber-200 uppercase">
-                      Promo Offer
-                    </span>
-                  )}
-
-                  <h3 className={`text-xl font-serif mb-2.5 ${isExclusive ? 'text-white' : 'text-[var(--text)]'}`}>{stage.name}</h3>
-                  <p className={`text-sm min-h-12 mb-5 font-light ${isExclusive ? 'text-white/70' : 'text-[var(--text-muted)]'}`}>{stage.description}</p>
-
-                  <div className="mb-6 flex items-baseline gap-1">
-                    <span className={`text-4xl font-serif ${isExclusive ? 'text-white' : 'text-[var(--text)]'}`}>{stage.price}</span>
-                    <span className={`text-sm ${isExclusive ? 'text-white/70' : 'text-[var(--text-muted)]'}`}>/ {stage.period}</span>
-                  </div>
-
-                  <a
-                    href={link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`w-full rounded-xl text-center font-semibold transition-colors mb-6 btn
-                      ${isExclusive ? 'btn-primary' : 'btn-secondary'}`}
-                  >
-                    → Start Today
-                  </a>
-
-                  <div className="flex-grow">
-                    <p className={`text-sm font-bold mb-4 ${isExclusive ? 'text-white' : 'text-[var(--text)]'}`}>What's included</p>
-                    <ul className="space-y-3">
-                      {stage.features.map((feature, fIdx) => (
-                        <li key={fIdx} className={`flex items-start gap-2.5 text-sm font-light ${isExclusive ? 'text-white/75' : 'text-[var(--text-muted)]'}`}>
-                          <svg className="w-4 h-4 shrink-0 text-[var(--accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
-                          </svg>
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </Reveal>
-            );
-          })}
+        <div className="mb-4">
+          <h3 className={`text-xl md:text-2xl font-bold tracking-tight mb-2 ${isExclusive ? 'text-white' : 'text-[var(--text)]'}`}>
+            {stage.name}
+          </h3>
+          <p className={`text-[13px] leading-relaxed ${isExclusive ? 'text-white/55' : 'text-[var(--text-muted)]'}`}>
+            {stage.description}
+          </p>
         </div>
 
-        <div className="hidden xl:block relative">
-          <div
-            ref={desktopTrackRef}
-            onScroll={updateDesktopScrollState}
-            className="flex gap-8 overflow-x-auto snap-x snap-mandatory pb-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        <div className="mb-6 flex items-baseline gap-1">
+          {isBonusView && (
+            <span className="text-sm text-white/30 line-through mr-1">
+              {stage.price.replace(/\d+/, (value) =>
+                Math.round(parseInt(value, 10) * 1.5).toString()
+              )}
+            </span>
+
+          )}
+          <span className={`text-4xl md:text-5xl font-black leading-none tracking-[-0.04em] ${isExclusive ? 'text-white' : 'text-[var(--text)]'}`}>
+            {stage.price}
+          </span>
+          <span className={`text-[11px] font-semibold uppercase tracking-[0.12em] ml-1 ${isExclusive ? 'text-white/40' : 'text-[var(--text-muted)]'}`}>
+            / {stage.period}
+          </span>
+          {isBonusView && (
+            <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-sm bg-emerald-500/15 text-emerald-400 text-[9px] font-extrabold tracking-wider">
+              33% OFF
+            </span>
+          )}
+        </div>
+
+        <div className={`mb-5 h-px ${isExclusive ? 'bg-gradient-to-r from-transparent via-white/10 to-transparent' : 'bg-[var(--border)]'}`} />
+
+        <div className="flex-grow">
+          <p className={`text-[9px] font-extrabold tracking-[0.18em] uppercase mb-3 ${isExclusive ? 'text-white/50' : 'text-[var(--text-muted)]'}`}>
+            What&apos;s included
+          </p>
+          <ul className="space-y-2.5">
+            {stage.features.map((feature, featureIndex) => (
+              <li key={featureIndex} className="flex items-start gap-2.5">
+                <div className={`mt-0.5 shrink-0 ${isExclusive ? 'text-emerald-400' : 'text-[var(--text-muted)]'}`}>
+                  <svg className="w-3 h-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <span className={`text-[13px] leading-snug ${isExclusive ? 'text-white/75' : 'text-[var(--text-muted)]'}`}>
+                  {feature}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-6">
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`group w-full py-3.5 rounded-xl flex items-center justify-center gap-2 text-[11px] tracking-[0.14em] font-bold uppercase transition-all duration-300 ${isExclusive
+                ? 'bg-gradient-to-r from-[#1a2744] to-[#2563eb] text-white shadow-[0_6px_24px_rgba(37,99,235,0.28)] hover:shadow-[0_8px_32px_rgba(37,99,235,0.42)] hover:brightness-110'
+                : 'bg-gradient-to-r from-[#1a2744] to-[#2563eb] text-white shadow-[0_6px_24px_rgba(37,99,235,0.28)] hover:shadow-[0_8px_32px_rgba(37,99,235,0.42)] hover:brightness-110'
+              }`}
           >
-            {orderedStages.map((stage, idx) => {
-              const isExclusive = Boolean(stage.exclusive);
-              const link = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi, I want to enroll for the ${stage.name} stage.`)}`;
-              return (
-                <Reveal
-                  key={idx}
-                  delay={idx * 120}
-                  once
-                  className="snap-start shrink-0 w-[calc((100%-4rem)/3)] flex"
-                >
-                  <div className={`w-full rounded-[2rem] p-9 relative flex flex-col transition-all duration-200 hover:-translate-y-2
-                    ${isExclusive
-                      ? 'bg-[#05070A] border border-[var(--accent)] shadow-[0_0_0_1px_rgba(180,83,9,0.3)]'
-                      : 'bg-[var(--surface)] border border-[var(--border)]'}`}>
-                    {isExclusive && (
-                      <span className="absolute top-5 right-5 rounded-full bg-[var(--accent)]/20 border border-[var(--accent)]/45 px-3 py-1.5 text-[11px] font-bold tracking-[0.12em] text-amber-200 uppercase">
-                        Promo Offer
-                      </span>
-                    )}
+            Start Today
+            <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-                    <h3 className={`text-2xl font-serif mb-3 ${isExclusive ? 'text-white' : 'text-[var(--text)]'}`}>{stage.name}</h3>
-                    <p className={`text-sm min-h-12 mb-6 font-light ${isExclusive ? 'text-white/70' : 'text-[var(--text-muted)]'}`}>{stage.description}</p>
-                    
-                    <div className="mb-8 flex items-baseline gap-1">
-                      <span className={`text-5xl font-serif ${isExclusive ? 'text-white' : 'text-[var(--text)]'}`}>{stage.price}</span>
-                      <span className={`text-sm ${isExclusive ? 'text-white/70' : 'text-[var(--text-muted)]'}`}>/ {stage.period}</span>
-                    </div>
+export default function StagesPricing() {
+  const [isBonus, setIsBonus] = useState(false);
+  const headRef = useRef<HTMLDivElement>(null);
 
-                    <a 
-                      href={link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`w-full rounded-xl text-center font-semibold transition-colors mb-8 btn
-                        ${isExclusive ? 'btn-primary' : 'btn-secondary'}`}
-                    >
-                      → Start Today
-                    </a>
+  useScrollReveal(headRef);
 
-                    <div className="flex-grow">
-                      <p className={`text-sm font-bold mb-5 ${isExclusive ? 'text-white' : 'text-[var(--text)]'}`}>What's included</p>
-                      <ul className="space-y-3.5">
-                        {stage.features.map((feature, fIdx) => (
-                          <li key={fIdx} className={`flex items-start gap-3 text-sm font-light ${isExclusive ? 'text-white/75' : 'text-[var(--text-muted)]'}`}>
-                            <svg className="w-5 h-5 shrink-0 text-[var(--accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
-                            </svg>
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+  const normalStages = stages.filter((stage) => !stage.exclusive).slice(0, 3);
+  const bonusStages = stages.filter((stage) => stage.exclusive);
+  const displayStages = isBonus ? bonusStages : normalStages;
 
-                  </div>
-                </Reveal>
-              );
-            })}
+  return (
+    <section
+      className="border-t border-[var(--border)] overflow-hidden"
+      id="stages"
+      style={{ background: '#070A10', paddingTop: 'clamp(56px,7vw,88px)', paddingBottom: 'clamp(56px,7vw,88px)' }}
+    >
+      <div className="max-w-6xl mx-auto px-6 lg:px-8">
+        <div ref={headRef} data-reveal className="reveal-slide-up reveal-pricing-head">
+          <div className="text-center max-w-2xl mx-auto mb-8 md:mb-10">
+            <p className="text-xs font-semibold tracking-[0.22em] uppercase text-[#4a7cf7] mb-3">Enrollment</p>
+            <h2 className="text-3xl md:text-5xl tracking-tight text-[var(--text)]">
+              <span className="font-serif font-light">Select your </span>
+              <span className="font-serif font-bold">Stage.</span>
+            </h2>
           </div>
 
-          <div className="pointer-events-none absolute inset-y-0 left-0 right-0">
-            {canScrollLeft && (
+          <div className="flex justify-center mb-10 md:mb-14">
+            <div className="relative inline-flex items-center bg-[#030509] border border-[var(--border)] rounded-full p-1">
               <button
-                type="button"
-                onClick={() => scrollDesktopCards('left')}
-                aria-label="View previous plans"
-                className="pointer-events-auto absolute left-2 cursor-pointer top-1/2 -translate-y-1/2 h-11 w-11 rounded-full border border-[var(--accent)]/40 bg-white/95 hover:bg-white flex items-center justify-center shadow-sm transition-colors"
+                onClick={() => setIsBonus(false)}
+                className={`relative z-10 w-32 md:w-40 py-2.5 text-[11px] font-bold tracking-[0.15em] cursor-pointer uppercase transition-colors duration-300 rounded-full ${!isBonus ? 'text-white' : 'text-[var(--text-muted)] hover:text-white'
+                  }`}
               >
-                <svg className="w-5 h-5 text-[var(--accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 6l-6 6 6 6" />
-                </svg>
+                Normal Offer
               </button>
-            )}
-
-            {canScrollRight && (
               <button
-                type="button"
-                onClick={() => scrollDesktopCards('right')}
-                aria-label="View more plans"
-                className="pointer-events-auto absolute right-2 top-1/2 -translate-y-1/2 h-11 w-11 rounded-full border border-[var(--accent)]/40 bg-white/95 hover:bg-white flex items-center justify-center shadow-sm transition-colors cursor-pointer"
+                onClick={() => setIsBonus(true)}
+                className={`relative z-10 w-32 md:w-40 py-2.5 text-[11px] font-bold tracking-[0.15em] cursor-pointer uppercase transition-colors duration-300 rounded-full ${isBonus ? 'text-white' : 'text-[var(--text-muted)] hover:text-white'
+                  }`}
               >
-                <svg className="w-5 h-5 text-[var(--accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 6l6 6-6 6" />
-                </svg>
+                Bonus Offer
               </button>
-            )}
+              <div
+                className="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[var(--surface)] border border-white/[0.07] rounded-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
+                style={{ transform: isBonus ? 'translateX(100%)' : 'translateX(0%)' }}
+              />
+            </div>
           </div>
+        </div>
+
+        <div
+          key={isBonus ? 'bonus' : 'normal'}
+          className={`grid gap-4 mx-auto ${isBonus ? 'grid-cols-1 max-w-lg' : 'grid-cols-1 md:grid-cols-3 max-w-5xl'}`}
+        >
+          {displayStages.map((stage, index) => (
+            <PricingCard key={stage.name} stage={stage} index={index} isBonusView={isBonus} />
+          ))}
         </div>
       </div>
     </section>

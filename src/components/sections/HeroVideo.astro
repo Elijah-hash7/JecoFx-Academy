@@ -1,109 +1,749 @@
 ---
 import { Image } from "astro:assets";
-import heroImage from "../../assets/image.webp";
 ---
 
-<section class="relative overflow-hidden bg-[#0B0D10] min-h-[100svh] min-h-[100dvh]">
+<section
+  id="hero"
+  class="relative overflow-hidden"
+  style="background:#04060A;min-height:100svh;min-height:100dvh;display:flex;flex-direction:column;"
+>
   <style>
-    @keyframes heroBreathe {
-      0%, 100% { transform: scale(1) translate(0, 0); }
-      50% { transform: scale(1.1) translate(1%, 0.5%); }
+    @import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap");
+
+    :root {
+      /* Sets the premium font stack (Apple's SF Pro, then Inter) */
+      --font-display:
+        "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, sans-serif;
     }
 
-    /* @keyframes scrollBounce {
-      0% { transform: translateY(-140%); opacity: 0; }
-      15% { opacity: 0.95; }
-      70% { opacity: 0.65; }
-      100% { transform: translateY(240%); opacity: 0; }
-    } */
+    @keyframes revealUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes revealFade {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    @keyframes ping {
+      0% {
+        transform: scale(1);
+        opacity: 0.75;
+      }
+      70% {
+        transform: scale(2.4);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(2.4);
+        opacity: 0;
+      }
+    }
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-50%);
+      }
+    }
+    @keyframes driftBg {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-1200px);
+      }
+    }
+    @keyframes driftFg {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-600px);
+      }
+    }
+    @keyframes bounceDown {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(5px);
+      }
+    }
+    /* Animated SVG liquidity line draw */
+    @keyframes drawLine {
+      from {
+        stroke-dashoffset: 2000;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      letter-spacing: -0.03em; /* Pulls letters slightly closer together */
+      line-height: 1.05; /* Stacks the text lines tightly */
+    }
+
+    .hero-title {
+      font-size: clamp(2.35rem, 6.15vw, 4.7rem);
+      margin-bottom: 0.5rem;
+      width: 100%;
+    }
+
+    .hero-badge,
+    .hero-subtext,
+    .hero-cta-wrap {
+      opacity: 0;
+      transform: translateY(18px);
+      transition:
+        opacity 0.65s ease,
+        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .hero-line {
+      display: block;
+      opacity: 0;
+      transform: translateY(24px);
+      transition:
+        opacity 0.78s ease,
+        transform 0.78s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .hero-line-1 { transition-delay: 0.12s; }
+    .hero-line-2 { transition-delay: 0.22s; }
+    .hero-line-3 { transition-delay: 0.32s; }
+
+    .hero-badge { transition-delay: 0.05s; }
+    .hero-subtext { transition-delay: 0.44s; }
+    .hero-cta-wrap { transition-delay: 0.56s; }
+
+    #hero-content[data-hero-revealed="true"] .hero-badge,
+    #hero-content[data-hero-revealed="true"] .hero-subtext,
+    #hero-content[data-hero-revealed="true"] .hero-cta-wrap,
+    #hero-content[data-hero-revealed="true"] .hero-line {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Creates the silver/metallic text fade effect */
+    .text-gradient {
+      background: linear-gradient(
+        180deg,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0.6) 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .drift-bg-layer {
+      position: absolute;
+      top: -50px;
+      bottom: -50px;
+      left: -50px;
+      width: calc(100vw + 1250px);
+      animation: driftBg 60s linear infinite;
+      will-change: transform;
+    }
+    .drift-fg-layer {
+      position: absolute;
+      top: -50px;
+      bottom: -50px;
+      left: -50px;
+      width: calc(100vw + 650px);
+      animation: driftFg 45s linear infinite;
+      will-change: transform;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .drift-bg-layer,
+      .drift-fg-layer {
+        animation: none !important;
+      }
+      #arrow-down {
+        animation: none !important;
+      }
+      .hero-line {
+        transform: none !important;
+      }
+      .hero-badge,
+      .hero-subtext,
+      .hero-cta-wrap {
+        transform: none !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: clamp(2.55rem, 9.4vw, 3.6rem);
+        line-height: 1;
+      }
+      #hero-content {
+        padding: 128px 18px 16px !important;
+      }
+      #hgrid {
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+        background-size: 42px 42px;
+      }
+      #hvignette {
+        background: radial-gradient(
+          ellipse at 50% 48%,
+          transparent 24%,
+          rgba(4, 6, 10, 0.52) 68%,
+          rgba(4, 6, 10, 0.82) 100%
+        );
+      }
+      .drift-bg-layer {
+        opacity: 0.2 !important;
+        filter: blur(5px) !important;
+      }
+      .drift-fg-layer {
+        opacity: 0.28 !important;
+      }
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition:
+        background 0.25s,
+        border-color 0.25s,
+        transform 0.15s;
+    }
+    .cta:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+    #arrow-down {
+      animation: bounceDown 1.4s ease-in-out infinite;
+    }
+
+    .ticker-mask {
+      overflow: hidden;
+      flex: 1;
+      min-width: 0;
+      mask-image: linear-gradient(
+        90deg,
+        transparent,
+        black 8%,
+        black 92%,
+        transparent
+      );
+      -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent,
+        black 8%,
+        black 92%,
+        transparent
+      );
+    }
+    .ticker-track {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: marquee 60s linear infinite;
+    }
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
+    .ti {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 18px;
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.3);
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .du {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #22c55e;
+      flex-shrink: 0;
+    }
+    .dd {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #ef4444;
+      flex-shrink: 0;
+    }
+    .vu {
+      color: #22c55e;
+    }
+    .vd {
+      color: #ef4444;
+    }
+
+    .bbar {
+      flex-shrink: 0;
+      height: 46px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(4, 6, 10, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 14px;
+      position: relative;
+      z-index: 30;
+      animation: revealFade 0.6s ease 0.9s both;
+    }
+
+    /* Overlays */
+    #hgrain {
+      position: absolute;
+      inset: 0;
+      z-index: 7;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+      background-size: 160px;
+      mix-blend-mode: overlay;
+    }
+    #hgrid {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    #hvignette {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      background: radial-gradient(
+        ellipse at 50% 50%,
+        transparent 30%,
+        rgba(4, 6, 10, 0.7) 70%,
+        rgba(4, 6, 10, 0.95) 100%
+      );
+    }
   </style>
 
-  <script>
-    /** @type {number | null} */
-    let animationFrameId = null;
-    /** @type {HTMLElement | null} */
-    const contentEl = document.querySelector("[data-hero-content]");
-
-    const handleScroll = () => {
-      if (!contentEl) return;
-      if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
-      animationFrameId = requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        const maxScroll = 700;
-        const progress = Math.min(scrollY / maxScroll, 1);
-        const opacity = Math.max(1 - progress * 1.05, 0);
-        const translateX = -(progress * 95);
-        contentEl.style.opacity = String(opacity);
-        contentEl.style.transform = `translateX(${translateX}px)`;
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-
-    window.addEventListener("beforeunload", () => {
-      if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
-    });
-  </script>
-
-  <div class="absolute inset-0 z-0 overflow-hidden">
-    <Image
-      src={heroImage}
-      alt="Trading Chart Background"
-      width={1920}
-      height={1080}
-      loading="eager"
-      fetchpriority="high"
-      decoding="async"
-      sizes="100vw"
-      class="h-full w-full object-cover opacity-90 origin-center will-change-transform"
-      style="animation: heroBreathe 19s ease-in-out infinite alternate;"
-    />
-    <div class="absolute inset-0" style="background: linear-gradient(105deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0.15) 100%);"></div>
-    <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0B0D10]/90 to-transparent"></div>
+  <!-- ══ LAYER 1: BG blurred candlestick silhouettes — pushed to 14% opacity ══ -->
+  <div class="parallax-wrapper absolute inset-0 z-[2]" data-depth="4">
+    <div class="drift-bg-layer" style="opacity:0.14; filter:blur(7px);">
+      <svg width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <pattern
+            id="bg-candles"
+            width="1200"
+            height="800"
+            patternUnits="userSpaceOnUse"
+          >
+            <g fill="#b0c4de" stroke="#b0c4de" stroke-width="3">
+              <!-- Bigger, more visible silhouettes -->
+              <rect x="80" y="180" width="48" height="180"></rect><line
+                x1="104"
+                y1="80"
+                x2="104"
+                y2="480"></line>
+              <rect x="280" y="280" width="48" height="120"></rect><line
+                x1="304"
+                y1="160"
+                x2="304"
+                y2="520"></line>
+              <rect x="480" y="120" width="48" height="280"></rect><line
+                x1="504"
+                y1="50"
+                x2="504"
+                y2="460"></line>
+              <rect x="680" y="360" width="48" height="160"></rect><line
+                x1="704"
+                y1="260"
+                x2="704"
+                y2="580"></line>
+              <rect x="880" y="220" width="48" height="130"></rect><line
+                x1="904"
+                y1="130"
+                x2="904"
+                y2="410"></line>
+              <rect x="1080" y="300" width="48" height="200"></rect><line
+                x1="1104"
+                y1="180"
+                x2="1104"
+                y2="560"></line>
+            </g>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#bg-candles)"></rect>
+      </svg>
+    </div>
   </div>
 
-  <div class="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 min-h-[100svh] min-h-[100dvh] flex flex-col">
-    <div class="h-16 sm:h-18 lg:h-20 shrink-0"></div>
-    <div class="mt-auto pb-5 sm:pb-6">
-      <div data-hero-content class="max-w-3xl will-change-transform">
-        <p class="mb-4 text-xs uppercase tracking-[0.3em] text-white/70">Forex Academy</p>
-
-        <h1 class="text-[3rem] sm:text-[3.25rem] md:text-[3.35rem] lg:text-[4.2rem] font-extrabold tracking-tight text-white mb-4 sm:mb-5 uppercase leading-[1.02]">
-          Master Forex<br />
-          Trading <span class="text-white/70">—</span> From<br />
-          Beginner to<br />
-          Advanced.
-        </h1>
-
-        <p class="text-[1.1rem] sm:text-[1.2rem] md:text-[1.15rem] lg:text-[1.35rem] text-gray-300 mb-6 sm:mb-7 max-w-xl font-light leading-relaxed">
-          Gain the edge you need in the markets. Showcase your strategy, master your psychology, and become an institutional-grade trader.
-        </p>
-
-        <div>
-          <a
-            href="#about-us"
-            class="group inline-flex w-fit items-center justify-between gap-4 px-7 py-[14px] rounded-lg bg-transparent border-[1.5px] border-white/60 text-white font-semibold tracking-[0.05em] transition-all duration-200 ease-in-out hover:bg-white/[0.08] hover:border-white cursor-pointer"
+  <!-- ══ LAYER 2: FG realistic candlesticks — 20% opacity, more readable ══ -->
+  <div class="parallax-wrapper absolute inset-0 z-[3]" data-depth="8">
+    <div class="drift-fg-layer" style="opacity:0.20;">
+      <svg width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <pattern
+            id="fg-candles"
+            width="600"
+            height="600"
+            patternUnits="userSpaceOnUse"
           >
-            <span>Get Started</span>
-            <span class="inline-flex items-center justify-center transition-transform duration-200 ease-in-out group-hover:translate-x-1">
-              <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="none" stroke="currentColor">
-                <path d="M7 4l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-              </svg>
-            </span>
-          </a>
-        </div>
+            <!-- Greens — muted but visible -->
+            <g fill="#1a5c40" stroke="#1a5c40" stroke-width="1.5">
+              <rect x="20" y="295" width="11" height="45"></rect><line
+                x1="25"
+                y1="272"
+                x2="25"
+                y2="352"></line>
+              <rect x="60" y="262" width="11" height="36"></rect><line
+                x1="65"
+                y1="244"
+                x2="65"
+                y2="316"></line>
+              <rect x="180" y="318" width="11" height="28"></rect><line
+                x1="185"
+                y1="295"
+                x2="185"
+                y2="368"></line>
+              <rect x="220" y="252" width="11" height="70"></rect><line
+                x1="225"
+                y1="212"
+                x2="225"
+                y2="336"></line>
+              <rect x="300" y="278" width="11" height="24"></rect><line
+                x1="305"
+                y1="255"
+                x2="305"
+                y2="310"></line>
+              <rect x="340" y="232" width="11" height="50"></rect><line
+                x1="345"
+                y1="212"
+                x2="345"
+                y2="295"></line>
+              <rect x="500" y="352" width="11" height="40"></rect><line
+                x1="505"
+                y1="332"
+                x2="505"
+                y2="412"></line>
+              <rect x="540" y="328" width="11" height="28"></rect><line
+                x1="545"
+                y1="304"
+                x2="545"
+                y2="372"></line>
+            </g>
+            <!-- Reds — muted but visible -->
+            <g fill="#8b2424" stroke="#8b2424" stroke-width="1.5">
+              <rect x="100" y="262" width="11" height="56"></rect><line
+                x1="105"
+                y1="252"
+                x2="105"
+                y2="334"></line>
+              <rect x="140" y="312" width="11" height="34"></rect><line
+                x1="145"
+                y1="292"
+                x2="145"
+                y2="362"></line>
+              <rect x="260" y="252" width="11" height="50"></rect><line
+                x1="265"
+                y1="222"
+                x2="265"
+                y2="316"></line>
+              <rect x="380" y="232" width="11" height="68"></rect><line
+                x1="385"
+                y1="192"
+                x2="385"
+                y2="306"></line>
+              <rect x="420" y="292" width="11" height="44"></rect><line
+                x1="425"
+                y1="272"
+                x2="425"
+                y2="352"></line>
+              <rect x="460" y="332" width="11" height="60"></rect><line
+                x1="465"
+                y1="312"
+                x2="465"
+                y2="406"></line>
+            </g>
+            <!-- Liquidity line — brighter blue, more visible -->
+            <path
+              d="M0,340 C80,290 160,380 240,320 C320,265 400,355 480,300 C540,260 570,310 600,290"
+              fill="none"
+              stroke="#2a52a8"
+              stroke-width="2"
+              opacity="0.55"></path>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#fg-candles)"></rect>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Radial depth — slightly less aggressive so candles show through -->
+  <div
+    class="absolute inset-0 pointer-events-none z-[4]"
+    style="background:radial-gradient(ellipse at 50% 42%,rgba(30,58,138,0.18) 0%,rgba(4,6,10,0.72) 50%,rgba(4,6,10,0.96) 82%);"
+  >
+  </div>
+
+  <div id="hvignette"></div>
+  <div id="hgrain"></div>
+  <div id="hgrid"></div>
+
+  <!-- Center glow -->
+  <div
+    class="absolute pointer-events-none z-[5]"
+    style="top:45%;left:80%;transform:translate(-50%,-80%);width:clamp(300px,60vw,740px);height:clamp(220px,46vw,520px);background:radial-gradient(ellipse at 50% 60%,rgba(37,99,235,.10) 0%,rgba(37,99,235,.02) 58%,transparent 70%);filter:blur(56px);"
+  >
+  </div>
+
+  <!-- Bottom fade — matches bg so sections transition cleanly -->
+  <div
+    class="absolute inset-x-0 bottom-0 h-40 pointer-events-none z-[6]"
+    style="background:linear-gradient(to top,#04060A 0%,transparent 100%);"
+  >
+  </div>
+
+  <!-- ══ MAIN CONTENT ══ -->
+  <div
+    id="hero-content"
+    class="relative flex-1 flex flex-col items-center justify-center text-center"
+    style="padding:146px 20px 16px;z-index:10;will-change:opacity,transform;"
+  >
+    <!-- Badge -->
+    <div
+      class="hero-badge inline-flex items-center gap-2 mb-3  px-4 py-[5px] rounded-full"
+      style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);"
+    >
+      <span class="relative flex h-[5px] w-[5px] flex-shrink-0">
+        <span
+          class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
+          style="animation:ping 1.8s ease-in-out infinite;"></span>
+        <span
+          class="relative inline-flex h-[5px] w-[5px] rounded-full bg-emerald-400"
+        ></span>
+      </span>
+      <span
+        style="font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.42);"
+      >
+        Forex Academy &nbsp;·&nbsp; Est. 2023
+      </span>
+    </div>
+
+    <!-- ── HEADLINE ── -->
+    <h1
+      class="hero-title font-extrabold uppercase z-10"
+    >
+      <div class="hero-line hero-line-1 text-gradient">Master Forex</div>
+      <div class="hero-line hero-line-2 text-white">
+        Trading <span
+          class="text-white/20 font-light mx-2 md:mx-4 hidden sm:inline-block"
+          >—</span
+        > From
+      </div>
+      <div class="hero-line hero-line-3">
+        <span class="text-gradient">Beginner To</span>
+        <span class="text-white font-extrabold ml-2">Advanced.</span>
+      </div>
+    </h1>
+
+    <!-- Subtext -->
+    <p
+      class="hero-subtext"
+      style="max-width:min(400px,88vw);font-size:clamp(.86rem,1.5vw,.97rem);color:rgba(255,255,255,.36);font-weight:300;line-height:1.8;margin-bottom:15px;"
+    >
+      Institutional&#8209;grade insights, advanced market structuring, and
+      robust risk frameworks built for long&#8209;term compounding success.
+    </p>
+
+    <!-- CTA -->
+    <div class="hero-cta-wrap">
+      <a href="#about-us" class="cta">
+        <span>Get Started</span>
+        <svg
+          id="arrow-down"
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            d="M7 2.5v9M3 8l4 4 4-4"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- ══ BOTTOM TICKER BAR ══ -->
+  <div class="bbar">
+    <div class="ticker-mask">
+      <div class="ticker-track">
+        {
+          [
+            { p: "EUR/USD", v: "1.0847", c: "+0.12%", u: true },
+            { p: "GBP/USD", v: "1.2650", c: "+0.09%", u: true },
+            { p: "USD/JPY", v: "150.24", c: "-0.18%", u: false },
+            { p: "XAU/USD", v: "2,034", c: "+0.31%", u: true },
+            { p: "BTC/USD", v: "62,400", c: "+1.04%", u: true },
+            { p: "US30", v: "38,905", c: "-0.22%", u: false },
+            { p: "NAS100", v: "17,950", c: "+0.55%", u: true },
+            { p: "OIL/WTI", v: "78.50", c: "-0.14%", u: false },
+            { p: "EUR/JPY", v: "163.42", c: "+0.07%", u: true },
+            { p: "AUD/USD", v: "0.6581", c: "-0.19%", u: false },
+            { p: "EUR/USD", v: "1.0847", c: "+0.12%", u: true },
+            { p: "GBP/USD", v: "1.2650", c: "+0.09%", u: true },
+            { p: "USD/JPY", v: "150.24", c: "-0.18%", u: false },
+            { p: "XAU/USD", v: "2,034", c: "+0.31%", u: true },
+            { p: "BTC/USD", v: "62,400", c: "+1.04%", u: true },
+            { p: "US30", v: "38,905", c: "-0.22%", u: false },
+            { p: "NAS100", v: "17,950", c: "+0.55%", u: true },
+            { p: "OIL/WTI", v: "78.50", c: "-0.14%", u: false },
+            { p: "EUR/JPY", v: "163.42", c: "+0.07%", u: true },
+            { p: "AUD/USD", v: "0.6581", c: "-0.19%", u: false },
+          ].map((t) => (
+            <div class="ti">
+              <span class={t.u ? "du" : "dd"} />
+              <span style="color:rgba(255,255,255,.44);font-weight:500;">
+                {t.p}
+              </span>
+              <span>{t.v}</span>
+              <span class={t.u ? "vu" : "vd"}>{t.c}</span>
+            </div>
+          ))
+        }
       </div>
     </div>
+    <div
+      style="width:1px;height:20px;background:rgba(255,255,255,.07);flex-shrink:0;"
+    >
+    </div>
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <span class="relative flex h-[5px] w-[5px]">
+        <span
+          class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
+          style="animation:ping 1.8s ease-in-out infinite;"></span>
+        <span
+          class="relative inline-flex h-[5px] w-[5px] rounded-full bg-emerald-400"
+        ></span>
+      </span>
+      <span
+        style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.26);"
+        >Live</span
+      >
+    </div>
   </div>
 
-  <!-- <div class="hidden md:flex absolute bottom-0 left-1/2 -translate-x-1/2 flex-col items-center gap-3 z-20 md:h-24 pointer-events-none">
-    <span class="text-xs font-semibold tracking-[0.2em] text-white/90 uppercase">Scroll to explore</span>
-    <div class="w-[2px] flex-1 bg-white/15 relative overflow-hidden rounded-full">
-      <div
-        class="absolute left-0 top-0 h-[45%] w-full bg-gradient-to-b from-transparent via-white/95 to-transparent"
-        style="animation: scrollBounce 1.8s ease-in-out infinite;"
-      ></div>
-    </div>
-  </div> -->
+  <script>
+    const el = document.getElementById("hero-content");
+    const heroSection = document.getElementById("hero");
+    const parallaxWrappers = document.querySelectorAll(".parallax-wrapper");
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+    const isMobile = window.matchMedia("(max-width: 768px)");
+
+    let af: number | null = null;
+    let targetX = 0,
+      targetY = 0,
+      currentX = 0,
+      currentY = 0;
+
+    if (el && heroSection) {
+      const revealObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            el.setAttribute("data-hero-revealed", "true");
+            return;
+          }
+          el.removeAttribute("data-hero-revealed");
+        },
+        { threshold: 0.3 },
+      );
+      revealObserver.observe(heroSection);
+    }
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!el) return;
+        if (af) cancelAnimationFrame(af);
+        af = requestAnimationFrame(() => {
+          const p = Math.min(window.scrollY / 860, 1);
+          if (p >= 1) {
+            el.style.opacity = "0.22";
+            el.style.transform = "scale(0.96) translateY(22px)";
+            el.style.filter = "blur(2px)";
+            return;
+          }
+          el.style.opacity = String(Math.max(1 - p * 0.78, 0.22));
+          el.style.transform = `scale(${1 - p * 0.04}) translateY(${p * 22}px)`;
+          el.style.filter =
+            p * 2 > 0.45 ? `blur(${(p * 2).toFixed(1)}px)` : "";
+        });
+      },
+      { passive: true },
+    );
+
+    if (!prefersReduced.matches && !isMobile.matches) {
+      window.addEventListener(
+        "mousemove",
+        (e) => {
+          const cx = window.innerWidth / 2,
+            cy = window.innerHeight / 2;
+          targetX = (e.clientX - cx) / cx;
+          targetY = (e.clientY - cy) / cy;
+        },
+        { passive: true },
+      );
+
+      const animate = () => {
+        currentX += (targetX - currentX) * 0.05;
+        currentY += (targetY - currentY) * 0.05;
+        parallaxWrappers.forEach((w) => {
+          const d = parseFloat(w.getAttribute("data-depth") || "0");
+          (w as HTMLElement).style.transform =
+            `translate(${currentX * d}px, ${currentY * d}px)`;
+        });
+        requestAnimationFrame(animate);
+      };
+      animate();
+    }
+  </script>
 </section>
