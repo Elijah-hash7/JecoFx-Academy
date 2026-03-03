@@ -29,39 +29,27 @@ function ChannelCard({
     <div
       ref={ref}
       data-reveal
-      className={`reveal-slide-up reveal-contact-card flex ${
-        primary ? 'contact-primary-glow' : ''
-      }`}
+      className="reveal-slide-up reveal-contact-card flex"
     >
       <div
-        className={`group w-full rounded-2xl flex flex-col justify-between p-6 md:p-7 transition-all duration-300 hover:-translate-y-1 ${
-          primary
-            ? 'bg-gradient-to-b from-[#0a1228] to-[#050810] border border-[#1e3a8a] shadow-[0_0_40px_-8px_rgba(30,58,138,0.3)]'
-            : 'bg-[var(--surface)] border border-[var(--border)] hover:border-white/[0.1]'
-        }`}
+        className="group w-full rounded-2xl flex flex-col justify-between p-6 md:p-7 transition-all duration-300 hover:-translate-y-1 bg-[var(--surface)] border border-[var(--border)] hover:border-white/[0.1]"
       >
         <div className="flex items-start justify-between mb-7">
           <div
-            className={`inline-flex items-center justify-center w-10 h-10 rounded-xl ${
-              primary
-                ? 'bg-[rgba(30,58,138,0.18)] border border-[rgba(30,58,138,0.35)]'
-                : 'bg-[rgba(255,255,255,0.04)] border border-[var(--border)]'
-            }`}
+            className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[rgba(255,255,255,0.04)] border border-[var(--border)]"
           >
-            <Icon className={`w-4 h-4 ${primary ? 'text-[#4a7cf7]' : 'text-[var(--text-muted)]'}`} />
+            <Icon className="w-4 h-4 text-[var(--text-muted)]" />
           </div>
           <ArrowUpRight
-            className={`w-4 h-4 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ${
-              primary ? 'text-[#4a7cf7]/50' : 'text-[var(--text-muted)]/40'
-            }`}
+            className="w-4 h-4 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[var(--text-muted)]/40"
           />
         </div>
 
         <div className="flex-grow mb-7">
-          <h3 className={`text-[15px] font-bold tracking-tight mb-2 ${primary ? 'text-white' : 'text-[var(--text)]'}`}>
+          <h3 className="text-[15px] font-bold tracking-tight mb-2 text-[var(--text)]">
             {label}
           </h3>
-          <p className={`text-[13px] leading-relaxed ${primary ? 'text-white/50' : 'text-[var(--text-muted)]'}`}>
+          <p className="text-[13px] leading-relaxed text-[var(--text-muted)]">
             {desc}
           </p>
         </div>
@@ -70,11 +58,7 @@ function ChannelCard({
           href={href}
           target={external ? '_blank' : undefined}
           rel={external ? 'noopener noreferrer' : undefined}
-          className={`w-full py-3 rounded-xl text-center text-[10px] tracking-[0.14em] font-bold uppercase transition-all duration-300 ${
-            primary
-              ? 'bg-gradient-to-r from-[#1e3a8a] to-[#2563eb] text-white shadow-[0_4px_20px_rgba(37,99,235,0.25)] hover:shadow-[0_6px_28px_rgba(37,99,235,0.4)] hover:brightness-110'
-              : 'bg-[rgba(255,255,255,0.04)] border border-[var(--border)] text-[var(--text-muted)] hover:text-white hover:border-white/[0.15] hover:bg-[rgba(255,255,255,0.07)]'
-          }`}
+          className="w-full py-3 rounded-xl text-center text-[10px] tracking-[0.14em] font-bold uppercase transition-all duration-300 bg-[rgba(255,255,255,0.04)] border border-[var(--border)] text-[var(--text-muted)] hover:text-white hover:border-white/[0.15] hover:bg-[rgba(255,255,255,0.07)]"
         >
           {cta}
         </a>

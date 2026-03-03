@@ -40,27 +40,18 @@ function ServiceCard({
   const link = title === 'Daily Signals'
     ? 'https://t.me/jeco4rex'
     : `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-  const isFeatured = index === 0;
 
   return (
     <div
       ref={ref}
       data-reveal
-      className={`reveal-services-card srv-card group relative flex flex-col rounded-2xl border p-6 md:p-7 ${
-        isFeatured
-          ? 'services-card-featured border-[rgba(74,124,247,0.28)] bg-gradient-to-b from-[#080e1f] to-[#040608]'
-          : 'bg-[var(--surface)] border-[var(--border)] hover:border-[rgba(74,124,247,0.2)]'
-      }`}
+      className="reveal-services-card srv-card group relative flex flex-col rounded-2xl border p-6 md:p-7 bg-[var(--surface)] border-[var(--border)] hover:border-[rgba(74,124,247,0.2)]"
     >
       <div className="flex items-start justify-between mb-6">
         <div
-          className={`srv-icon-wrap w-10 h-10 rounded-xl flex items-center justify-center border ${
-            isFeatured
-              ? 'bg-[rgba(74,124,247,0.14)] border-[rgba(74,124,247,0.35)]'
-              : 'bg-[rgba(255,255,255,0.03)] border-[var(--border)]'
-          }`}
+          className="srv-icon-wrap w-10 h-10 rounded-xl flex items-center justify-center border bg-[rgba(255,255,255,0.03)] border-[var(--border)]"
         >
-          <span className={`srv-icon ${isFeatured ? 'text-[#4a7cf7]' : 'text-[var(--text-muted)]'}`}>
+          <span className="srv-icon text-[var(--text-muted)]">
             {iconMap[title]}
           </span>
         </div>
@@ -74,20 +65,11 @@ function ServiceCard({
         href={link}
         target="_blank"
         rel="noopener noreferrer"
-        className={`inline-flex items-center gap-1.5 text-[10px] font-bold tracking-[0.1em] uppercase transition-colors duration-200 ${
-          isFeatured ? 'text-[#4a7cf7]' : 'text-[var(--text-muted)] hover:text-[#4a7cf7]'
-        }`}
+        className="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-[0.1em] uppercase text-[var(--text-muted)] hover:text-[#4a7cf7] transition-colors duration-200"
       >
         Learn more
         <span className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
       </a>
-
-      {isFeatured && (
-        <div className="absolute top-0 right-0 w-20 h-20 rounded-tr-2xl overflow-hidden pointer-events-none">
-          <div className="absolute top-0 right-0 w-px h-12 bg-gradient-to-b from-[#4a7cf7]/40 to-transparent" />
-          <div className="absolute top-0 right-0 h-px w-12 bg-gradient-to-l from-[#4a7cf7]/40 to-transparent" />
-        </div>
-      )}
     </div>
   );
 }

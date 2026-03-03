@@ -157,14 +157,12 @@ export default function AboutUs() {
           >
             <div>
               <h3 className="text-[1.75rem] md:text-[2rem] lg:text-[2.2rem] font-medium text-[var(--text)] leading-[1.24] tracking-tight mb-2">
-                We are committed to simplifying forex trading by training students to become{' '}
-                <span className="inline-flex items-baseline gap-1 whitespace-nowrap">
-                  <span className="relative inline-flex items-center gap-1.5 px-3 py-[2px] max-sm:px-2.5 max-sm:py-[1px] rounded-lg align-middle -translate-y-[0.08em] mx-0.5 bg-[rgba(30,58,138,0.2)] border border-[rgba(30,58,138,0.38)]">
-                    <span className="w-[7px] h-[7px] rounded-full bg-[#4a7cf7] flex-shrink-0 animate-pulse" />
-                    <span className="text-white font-semibold">confident,</span>
-                  </span>
-                  <span className="leading-none">consistent,</span>
+                We are committed to{' '}
+                <span className="relative inline-flex items-center gap-1.5 px-3 py-[2px] max-sm:px-2.5 max-sm:py-[1px] rounded-lg align-middle -translate-y-[0.08em] mx-0.5 bg-[rgba(30,58,138,0.2)] border border-[rgba(30,58,138,0.38)] whitespace-nowrap">
+                  <span className="w-[7px] h-[7px] rounded-full bg-[#4a7cf7] flex-shrink-0 animate-pulse" />
+                  <span className="text-white font-semibold">simplifying forex</span>
                 </span>{' '}
+                trading by training students to become confident, consistent,
                 knowledgeable, and profitable traders.
               </h3>
 
